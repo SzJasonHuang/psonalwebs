@@ -2,6 +2,7 @@ export type ExperienceEntry = {
   role: string;
   company: string;
   companyUrl?: string;
+  companySuffix?: string;
   location: string;
   start: string;
   end: string;
@@ -38,7 +39,9 @@ export const experience: ExperienceEntry[] = [
   },
   {
     role: "Summer Undergraduate Teaching Assistant (CPSC 213)",
-    company: "The University of British Columbia — Faculty of Computer Science",
+    company: "Faculty of Computer Science",
+    companyUrl: "https://www.cs.ubc.ca/",
+    companySuffix: "The University of British Columbia",
     location: "Vancouver, BC",
     start: "June 2026",
     end: "Present",
@@ -49,7 +52,7 @@ export const experience: ExperienceEntry[] = [
   },
   {
     role: "Software Developer",
-    company: "Motion UBC — The University of British Columbia",
+    company: "Motion UBC, The University of British Columbia",
     location: "Vancouver, BC",
     start: "November 2025",
     end: "Present",
@@ -60,7 +63,9 @@ export const experience: ExperienceEntry[] = [
   },
   {
     role: "Undergraduate Teaching Assistant (CPSC 110)",
-    company: "The University of British Columbia — Faculty of Computer Science",
+    company: "Faculty of Computer Science",
+    companyUrl: "https://www.cs.ubc.ca/",
+    companySuffix: "The University of British Columbia",
     location: "Vancouver, BC",
     start: "September 2025",
     end: "May 2026",
