@@ -14,7 +14,7 @@ A short note on how this site is put together, in case it's useful to anyone els
 
 ## Why markdown over a CMS
 
-For a personal blog with a handful of posts, a CMS is more infrastructure than the problem needs. Markdown files live in the repo, are easy to edit, and deploy with everything else — no extra services to keep running.
+For a personal blog with a handful of posts, a CMS is more infrastructure than the problem needs. Markdown files live in the repo, are easy to edit, and deploy with everything else - no extra services to keep running.
 
 ```ts
 const pipeline = unified().use(remarkParse).use(remarkRehype).use(rehypeStringify);

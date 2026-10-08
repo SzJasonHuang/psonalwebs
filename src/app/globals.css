@@ -1,23 +1,212 @@
 @import "tailwindcss";
-@plugin "@tailwindcss/typography";
 
-:root {
-  --background: #ffffff;
-  --foreground: #18181b;
+/* Windows 95 UI kit.
+   Design adapted from Yuteoctober/wins95Portfolio (MIT) — rebuilt for
+   Next.js + Tailwind. Bevels follow the original 95 raised/sunken border
+   model: a 2px double edge, light from the top-left. */
+@theme {
+  --color-w95-desktop: #008080;
+  --color-w95-face: #c0c0c0;
+  --color-w95-light: #dfdfdf;
+  --color-w95-white: #ffffff;
+  --color-w95-grey: #808080;
+  --color-w95-black: #0a0a0a;
+  --color-w95-navy: #000080;
+  --color-w95-blue: #1084d0;
+
+  --font-w95: Tahoma, "MS Sans Serif", Verdana, "Segoe UI", sans-serif;
+  --font-w95-mono: "Lucida Console", "Courier New", monospace;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-accent: #0d9488;
-  --color-accent-foreground: #ffffff;
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Raised: window frames, buttons, the taskbar. */
+@utility bevel-raised {
+  box-shadow: inset -1px -1px 0 var(--color-w95-black),
+    inset 1px 1px 0 var(--color-w95-white),
+    inset -2px -2px 0 var(--color-w95-grey),
+    inset 2px 2px 0 var(--color-w95-light);
+}
+
+/* Pressed: a button being held down, or an active taskbar item. */
+@utility bevel-pressed {
+  box-shadow: inset -1px -1px 0 var(--color-w95-white),
+    inset 1px 1px 0 var(--color-w95-black),
+    inset -2px -2px 0 var(--color-w95-light),
+    inset 2px 2px 0 var(--color-w95-grey);
+}
+
+/* Sunken: content wells, text fields, list views. */
+@utility bevel-sunken {
+  box-shadow: inset -1px -1px 0 var(--color-w95-white),
+    inset 1px 1px 0 var(--color-w95-grey),
+    inset -2px -2px 0 var(--color-w95-light),
+    inset 2px 2px 0 var(--color-w95-black);
+}
+
+/* A single-line groove, used for status bars and menu separators. */
+@utility bevel-groove {
+  box-shadow: inset -1px -1px 0 var(--color-w95-white),
+    inset 1px 1px 0 var(--color-w95-grey);
+}
+
+html,
+body {
+  height: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system,
-    sans-serif;
+  overflow: hidden;
+  background: var(--color-w95-desktop);
+  color: #000;
+  font-family: var(--font-w95);
+  font-size: 13px;
+  line-height: 1.45;
+  /* The 95 UI is not a text document — don't let it rubber-band. */
+  overscroll-behavior: none;
+}
+
+/* Focus rings, 95-style: a dotted marquee rather than a glow. */
+:where(button, a, [tabindex]):focus-visible {
+  outline: 1px dotted #000;
+  outline-offset: -4px;
+}
+
+/* Chunky square scrollbars for anything that scrolls inside a window. */
+@supports selector(::-webkit-scrollbar) {
+  ::-webkit-scrollbar {
+    width: 16px;
+    height: 16px;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: var(--color-w95-light);
+    background-image: linear-gradient(
+        45deg,
+        var(--color-w95-white) 25%,
+        transparent 25%
+      ),
+      linear-gradient(-45deg, var(--color-w95-white) 25%, transparent 25%);
+    background-size: 3px 3px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-w95-face);
+    box-shadow: inset -1px -1px 0 var(--color-w95-black),
+      inset 1px 1px 0 var(--color-w95-white),
+      inset -2px -2px 0 var(--color-w95-grey),
+      inset 2px 2px 0 var(--color-w95-light);
+  }
+  ::-webkit-scrollbar-corner {
+    background: var(--color-w95-face);
+  }
+}
+
+/* Rendered markdown inside a document window. */
+.doc-body {
+  color: #000;
+  font-family: var(--font-w95);
+  font-size: 13px;
+  line-height: 1.7;
+}
+.doc-body > * + * {
+  margin-top: 0.85em;
+}
+.doc-body h1,
+.doc-body h2,
+.doc-body h3 {
+  font-weight: 700;
+  line-height: 1.3;
+}
+.doc-body h1 {
+  font-size: 20px;
+}
+.doc-body h2 {
+  font-size: 16px;
+  margin-top: 1.5em;
+}
+.doc-body h3 {
+  font-size: 14px;
+  margin-top: 1.4em;
+}
+.doc-body a {
+  color: var(--color-w95-navy);
+  text-decoration: underline;
+}
+.doc-body a:hover {
+  color: var(--color-w95-blue);
+}
+.doc-body ul,
+.doc-body ol {
+  padding-left: 2em;
+}
+.doc-body ul {
+  list-style: square;
+}
+.doc-body ol {
+  list-style: decimal;
+}
+.doc-body li + li {
+  margin-top: 0.35em;
+}
+.doc-body code {
+  font-family: var(--font-w95-mono);
+  font-size: 12px;
+  background: var(--color-w95-face);
+  padding: 0 3px;
+}
+.doc-body pre {
+  font-family: var(--font-w95-mono);
+  font-size: 12px;
+  background: var(--color-w95-face);
+  padding: 8px;
+  overflow-x: auto;
+  box-shadow: inset -1px -1px 0 var(--color-w95-white),
+    inset 1px 1px 0 var(--color-w95-grey),
+    inset -2px -2px 0 var(--color-w95-light),
+    inset 2px 2px 0 var(--color-w95-black);
+}
+.doc-body pre code {
+  background: none;
+  padding: 0;
+}
+.doc-body figure {
+  margin: 1.2em 0;
+  padding: 5px;
+  background: var(--color-w95-face);
+  box-shadow: inset -1px -1px 0 var(--color-w95-white),
+    inset 1px 1px 0 var(--color-w95-grey),
+    inset -2px -2px 0 var(--color-w95-light),
+    inset 2px 2px 0 var(--color-w95-black);
+}
+.doc-body img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.doc-body figcaption {
+  padding: 6px 3px 1px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: #333;
+}
+.doc-body blockquote {
+  border-left: 3px solid var(--color-w95-grey);
+  padding-left: 10px;
+  color: #333;
+}
+.doc-body hr {
+  border: 0;
+  height: 2px;
+  box-shadow: inset 0 1px 0 var(--color-w95-grey),
+    inset 0 -1px 0 var(--color-w95-white);
+}
+.doc-body table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.doc-body th,
+.doc-body td {
+  border: 1px solid var(--color-w95-grey);
+  padding: 4px 6px;
+  text-align: left;
+}
+.doc-body th {
+  background: var(--color-w95-face);
 }

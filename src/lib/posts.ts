@@ -42,6 +42,20 @@ export function getAllPosts(): PostMeta[] {
     .sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
+/**
+ * Every post with its markdown already rendered. The desktop is a client
+ * component, so posts have to be serialized into it up front rather than
+ * fetched per window.
+ */
+export async function getAllPostsWithHtml(): Promise<Post[]> {
+  const posts = await Promise.all(
+    getSlugs().map((slug) => getPostBySlug(slug))
+  );
+  return posts
+    .filter((post): post is Post => post !== null)
+    .sort((a, b) => (a.date < b.date ? 1 : -1));
+}
+
 export async function getPostBySlug(slug: string): Promise<Post | null> {
   if (!getSlugs().includes(slug)) {
     return null;

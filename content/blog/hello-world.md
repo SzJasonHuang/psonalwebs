@@ -1,7 +1,7 @@
 ---
 title: "Hello, World"
 date: "2026-01-12"
-description: "The first post on this new site — why I built it and what to expect."
+description: "The first post on this new site - why I built it and what to expect."
 ---
 
 Welcome! This is the first post on my new personal site, and a good place to explain what this blog is for.
