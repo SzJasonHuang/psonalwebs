@@ -22,11 +22,11 @@ import { ResumeWindow } from "./windows/ResumeWindow";
 
 const DEFAULTS: Record<WindowSpec["kind"], Omit<WindowMeta, "title">> = {
   about: { width: 490, height: 420 },
-  resume: { width: 700, height: 580 },
+  resume: { width: 1220, height: 820, maximized: true },
   projects: { width: 700, height: 470 },
   project: { width: 640, height: 600 },
   blog: { width: 540, height: 360 },
-  post: { width: 700, height: 600 },
+  post: { width: 1220, height: 820, maximized: true },
   computer: { width: 510, height: 450 },
 };
 

@@ -14,6 +14,8 @@ export type WindowMeta = {
   title: string;
   width: number;
   height: number;
+  /** Open full-screen; width/height become the size Restore returns to. */
+  maximized?: boolean;
 };
 
 export type ResolveWindow = (spec: WindowSpec) => WindowMeta;
@@ -43,7 +45,7 @@ function makeWindow(
   z: number
 ): WindowInstance {
   const step = seq % CASCADE_WRAP;
-  return {
+  const win: WindowInstance = {
     ...spec,
     id: `win-${seq + 1}`,
     title: meta.title,
@@ -55,6 +57,26 @@ function makeWindow(
     minimized: false,
     maximized: false,
   };
+  return meta.maximized ? maximize(win) : win;
+}
+
+/** Shrink and shift a geometry so it sits inside the desktop. */
+function clampGeometry(
+  geo: Geometry,
+  bw: number,
+  bh: number
+): Geometry {
+  const width = Math.min(geo.width, bw - FIT_MARGIN);
+  const height = Math.min(geo.height, bh - FIT_MARGIN);
+  const x = Math.max(0, Math.min(geo.x, bw - width));
+  const y = Math.max(0, Math.min(geo.y, bh - height));
+  return { x, y, width, height };
+}
+
+function sameGeometry(a: Geometry, b: Geometry): boolean {
+  return (
+    a.x === b.x && a.y === b.y && a.width === b.width && a.height === b.height
+  );
 }
 
 /** The window whose z is highest among those not minimized. */
@@ -171,21 +193,20 @@ function reducer(state: State, action: Action): State {
 
       let changed = false;
       const windows = state.windows.map((w) => {
-        if (w.maximized) return w;
-        const width = Math.min(w.width, bw - FIT_MARGIN);
-        const height = Math.min(w.height, bh - FIT_MARGIN);
-        const x = Math.max(0, Math.min(w.x, bw - width));
-        const y = Math.max(0, Math.min(w.y, bh - height));
-        if (
-          width === w.width &&
-          height === w.height &&
-          x === w.x &&
-          y === w.y
-        ) {
-          return w;
+        // A maximized window fills the desktop already, but the size it
+        // restores to must still fit — a window that opened maximized never
+        // had its default size clamped.
+        if (w.maximized) {
+          if (!w.restore) return w;
+          const restore = clampGeometry(w.restore, bw, bh);
+          if (sameGeometry(restore, w.restore)) return w;
+          changed = true;
+          return { ...w, restore };
         }
+        const geo = clampGeometry(w, bw, bh);
+        if (sameGeometry(geo, w)) return w;
         changed = true;
-        return { ...w, width, height, x, y };
+        return { ...w, ...geo };
       });
 
       // Returning the identical state when nothing moved keeps the effect

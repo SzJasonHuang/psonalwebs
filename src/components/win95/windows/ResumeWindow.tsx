@@ -5,7 +5,7 @@ import { Button95, StatusBar, Well } from "../Chrome";
 
 function SectionTitle({ children }: { children: string }) {
   return (
-    <h2 className="mb-2 bg-w95-navy px-2 py-[3px] text-[13px] font-bold uppercase tracking-wide text-white">
+    <h2 className="mb-3 bg-w95-navy px-3 py-[6px] text-[23px] font-bold uppercase tracking-wide text-white">
       {children}
     </h2>
   );
@@ -14,29 +14,30 @@ function SectionTitle({ children }: { children: string }) {
 export function ResumeWindow() {
   return (
     <>
-      <Well className="px-6 py-5">
-        {/* Capped measure so a maximized window doesn't stretch lines across
-            the full width of a wide monitor. */}
-        <div className="max-w-[86ch]">
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-            <h1 className="text-[17px] font-bold">Resume</h1>
-            <Button95 href="/resume.pdf" download>
+      <Well className="px-10 py-8">
+        {/* Capped measure, centred, so a maximized window doesn't stretch
+            lines across the full width of a wide monitor. The cap is in ch,
+            so it scales with the 22px base size set here. */}
+        <div className="mx-auto max-w-[96ch] text-[22px]">
+          <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+            <h1 className="text-[40px] font-bold">Resume</h1>
+            <Button95 href="/resume.pdf" download className="text-[19px]!">
               Download PDF
             </Button95>
           </div>
 
-          <section className="mb-5">
+          <section className="mb-8">
             <SectionTitle>Experience</SectionTitle>
-            <div className="space-y-4">
+            <div className="space-y-6">
               {experience.map((entry) => (
                 <article key={`${entry.company}-${entry.role}`}>
                   <div className="flex flex-wrap items-baseline justify-between gap-x-3">
-                    <h3 className="text-[13px] font-bold">{entry.role}</h3>
-                    <span className="text-[12px] text-[#555]">
+                    <h3 className="text-[25px] font-bold">{entry.role}</h3>
+                    <span className="text-[19px] text-[#555]">
                       {entry.start} - {entry.end}
                     </span>
                   </div>
-                  <p className="text-[13px] italic text-[#333]">
+                  <p className="italic text-[#333]">
                     {entry.companyUrl ? (
                       <a
                         href={entry.companyUrl}
@@ -53,7 +54,7 @@ export function ResumeWindow() {
                     {" · "}
                     {entry.location}
                   </p>
-                  <ul className="mt-1.5 space-y-1 pl-5 text-[13px] leading-relaxed [list-style-type:square]">
+                  <ul className="mt-2 space-y-2 pl-6 leading-relaxed [list-style-type:square]">
                     {entry.bullets.map((bullet) => (
                       <li key={bullet}>{bullet}</li>
                     ))}
@@ -63,22 +64,22 @@ export function ResumeWindow() {
             </div>
           </section>
 
-          <section className="mb-5">
+          <section className="mb-8">
             <SectionTitle>Education</SectionTitle>
-            <div className="space-y-4">
+            <div className="space-y-6">
               {education.map((entry) => (
                 <article key={entry.school}>
                   <div className="flex flex-wrap items-baseline justify-between gap-x-3">
-                    <h3 className="text-[13px] font-bold">{entry.school}</h3>
-                    <span className="text-[12px] text-[#555]">
+                    <h3 className="text-[25px] font-bold">{entry.school}</h3>
+                    <span className="text-[19px] text-[#555]">
                       {entry.start} - {entry.end}
                     </span>
                   </div>
-                  <p className="text-[13px] italic text-[#333]">
+                  <p className="italic text-[#333]">
                     {entry.degree} · {entry.location}
                   </p>
                   {entry.bullets && (
-                    <ul className="mt-1.5 space-y-1 pl-5 text-[13px] leading-relaxed [list-style-type:square]">
+                    <ul className="mt-2 space-y-2 pl-6 leading-relaxed [list-style-type:square]">
                       {entry.bullets.map((bullet) => (
                         <li key={bullet}>{bullet}</li>
                       ))}
@@ -91,10 +92,10 @@ export function ResumeWindow() {
 
           <section>
             <SectionTitle>Skills</SectionTitle>
-            <dl className="space-y-2">
+            <dl className="space-y-3">
               {skills.map((group) => (
-                <div key={group.category} className="text-[13px]">
-                  <dt className="font-bold">{group.category}</dt>
+                <div key={group.category}>
+                  <dt className="text-[23px] font-bold">{group.category}</dt>
                   <dd className="leading-relaxed">{group.items.join(" · ")}</dd>
                 </div>
               ))}
